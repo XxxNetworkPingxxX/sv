@@ -1,0 +1,203 @@
+local function CreateStartupNotification()
+    local PlayerGui = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+    local notifyGui = Instance.new("ScreenGui")
+    notifyGui.Name = "StartupNotify"
+    notifyGui.Parent = PlayerGui
+    notifyGui.DisplayOrder = 999
+
+    local notifyFrame = Instance.new("Frame")
+    notifyFrame.Size = UDim2.new(0, 280, 0, 80)
+    notifyFrame.Position = UDim2.new(1, -290, 1, -90)
+    notifyFrame.BackgroundColor3 = Color3.new(0, 0, 0)
+    notifyFrame.BorderSizePixel = 0
+    notifyFrame.Parent = notifyGui
+
+    local titleLabel = Instance.new("TextLabel")
+    titleLabel.Size = UDim2.new(1, 0, 0, 25)
+    titleLabel.Position = UDim2.new(0, 10, 0, 5)
+    titleLabel.BackgroundTransparency = 1
+    titleLabel.Text = "正在启动 SV 脚本中心 V1"
+    titleLabel.TextColor3 = Color3.new(1, 1, 1)
+    titleLabel.TextSize = 14
+    titleLabel.Parent = notifyFrame
+
+    local contentLabel = Instance.new("TextLabel")
+    contentLabel.Size = UDim2.new(1, 0, 0, 25)
+    contentLabel.Position = UDim2.new(0, 10, 0, 30)
+    contentLabel.BackgroundTransparency = 1
+    contentLabel.Text = "欢迎使用 SV 脚本中心"
+    contentLabel.TextColor3 = Color3.new(1, 1, 1)
+    contentLabel.TextSize = 12
+    contentLabel.Parent = notifyFrame
+
+    local progressBar = Instance.new("Frame")
+    progressBar.Size = UDim2.new(1, -20, 0, 8)
+    progressBar.Position = UDim2.new(0, 10, 0, 55)
+    progressBar.BackgroundColor3 = Color3.new(20, 20, 20)
+    progressBar.BorderSizePixel = 0
+    progressBar.Parent = notifyFrame
+
+    local progressFill = Instance.new("Frame")
+    progressFill.Size = UDim2.new(1, 0, 1, 0)
+    progressFill.BackgroundColor3 = Color3.new(0.6, 0.2, 0.8)
+    progressFill.BorderSizePixel = 0
+    progressFill.Parent = progressBar
+
+    for i = 100, 0, -1 do
+        progressFill.Size = UDim2.new(i/100, 0, 1, 0)
+        task.wait(0.03)
+    end
+    notifyGui:Destroy()
+end
+
+local function CreateCloseNotification()
+    local PlayerGui = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+    local notifyGui = Instance.new("ScreenGui")
+    notifyGui.Name = "CloseNotify"
+    notifyGui.Parent = PlayerGui
+    notifyGui.DisplayOrder = 999
+
+    local notifyFrame = Instance.new("Frame")
+    notifyFrame.Size = UDim2.new(0, 280, 0, 80)
+    notifyFrame.Position = UDim2.new(1, -290, 1, -90)
+    notifyFrame.BackgroundColor3 = Color3.new(0, 0, 0)
+    notifyFrame.BorderSizePixel = 0
+    notifyFrame.Parent = notifyGui
+
+    local titleLabel = Instance.new("TextLabel")
+    titleLabel.Size = UDim2.new(1, 0, 0, 25)
+    titleLabel.Position = UDim2.new(0, 10, 0, 5)
+    titleLabel.BackgroundTransparency = 1
+    titleLabel.Text = "已关闭 SV 脚本中心 UI"
+    titleLabel.TextColor3 = Color3.new(1, 1, 1)
+    titleLabel.TextSize = 14
+    titleLabel.Parent = notifyFrame
+
+    local progressBar = Instance.new("Frame")
+    progressBar.Size = UDim2.new(1, -20, 0, 8)
+    progressBar.Position = UDim2.new(0, 10, 0, 55)
+    progressBar.BackgroundColor3 = Color3.new(20, 20, 20)
+    progressBar.BorderSizePixel = 0
+    progressBar.Parent = notifyFrame
+
+    local progressFill = Instance.new("Frame")
+    progressFill.Size = UDim2.new(1, 0, 1, 0)
+    progressFill.BackgroundColor3 = Color3.new(0.6, 0.2, 0.8)
+    progressFill.BorderSizePixel = 0
+    progressFill.Parent = progressBar
+
+    task.wait(2)
+    notifyGui:Destroy()
+end
+
+task.spawn(CreateStartupNotification)
+task.wait(3)
+
+local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/ZeianRussell/Kavo-UI-Library/main/Movable.source.lua"))()
+
+-- 修改为黑灰色主题
+local AllGrayTheme = {
+    SchemeColor = Color3.fromRGB(30, 30, 30),      -- 深灰主题色
+    Background = Color3.fromRGB(15, 15, 15),       -- 界面背景深灰
+    Header = Color3.fromRGB(40, 40, 40),           -- 头部浅深灰
+    TextColor = Color3.fromRGB(220, 220, 220),     -- 浅灰文字（保证可读性）
+    ElementColor = Color3.fromRGB(50, 50, 50)      -- 按钮等元素中灰
+}
+
+local Window = Library.CreateLib("SV 脚本中心(缝合) V1", AllGrayTheme)
+
+local Tab = Window:NewTab("门模式")
+local Section = Tab:NewSection("MODE DOORS")
+Section:NewButton("疯狂模式", "ButtonInfo",function()
+    print("Executed Mode")
+    loadstring(game:HttpGet('https://pastebin.com/raw/AgEtQui3'))()
+end)
+Section:NewButton("硬核模式V5", "ButtonInfo", function()
+    print("Executed Mode")
+    loadstring(game:HttpGet("https://gist.githubusercontent.com/Maxey1950/5f324f436b832e7aa8b1c4625dfa6106/raw/eb42e40d80fdf9228a93504886de882aba68fb00/gistfile1.txt",true))()
+end)
+Section:NewButton("碎片模式V4", "Have Fun!", function()
+    loadstring(game:HttpGet("https://glot.io/snippets/gpw1ypnl5o/raw/main.lua"))()
+end)
+Section:NewButton("无尽之门", "Have Fun!", function()
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/munciseek/Scriptmode/mode/Endless"))()
+end)
+Section:NewButton("不可能模式V1.8A", "Have Fun!", function()
+    loadstring(game:HttpGet('https://raw.githubusercontent.com/Ukazix/impossible-mode/main/Protected_79.lua.txt'))()
+end)
+
+local Tab2 = Window:NewTab("门脚本")
+local Section2 = Tab2:NewSection("门脚本功能区")
+Section2:NewButton("xa hub", "执行脚本", function()
+    loadstring(game:HttpGet("\104\116\116\112\115\58\47\47\112\97\115\116\101\98\105\110\46\99\111\109\47\114\97\119\47\54\53\84\119\84\56\106\97"))()
+end)
+Section2:NewButton("msdoors", "执行脚本", function()
+    loadstring(game:HttpGet("https://www.msdoors.xyz/script"))()
+end)
+Section2:NewButton("ms hub", "执行脚本", function()
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/atnew2025/Chinese-scripts/refs/heads/main/mshax(prohax).txt"))()
+end)
+Section2:NewButton("xk hub(doors)", "执行脚本", function()
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/DevSloPo/Main/refs/heads/main/DOORS"))()
+end)
+
+local Tab3 = Window:NewTab("被遗弃")
+local Section3 = Tab3:NewSection("被遗弃脚本区")
+Section3:NewButton("not hubV2", "执行脚本", function()
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/nothubbb/Ink-game-/refs/heads/main/Inkgame.lua"))()
+end)
+
+local Tab4 = Window:NewTab("通用")
+local Section4 = Tab4:NewSection("通用功能区")
+Section4:NewButton("飞行", "开启飞行功能", function()
+    loadstring("\108\111\97\100\115\116\114\105\110\103\40\103\97\109\101\58\72\116\116\112\71\101\116\40\34\104\116\116\112\115\58\47\47\112\97\115\116\101\98\105\110\46\99\111\109\47\114\97\119\47\90\66\122\99\84\109\49\102\34\41\41\40\41\10")()
+end)
+
+local CloseTab = Window:NewTab("关闭UI")
+local CloseSection = CloseTab:NewSection("点击关闭")
+CloseSection:NewButton("关闭 SV 脚本中心", "点击后关闭并显示通知", function()
+    CreateCloseNotification()
+    local coreGui = game:GetService("CoreGui")
+    local kavoWindow = coreGui:FindFirstChild("KavoWindow")
+    if kavoWindow then
+        kavoWindow:Destroy()
+    end
+end)
+
+local function CreateRightWindow(tabName)
+    local RightWindow = Library.CreateLib("", AllGrayTheme)
+    RightWindow.Frame.Position = UDim2.new(0.6, 0, 0.2, 0)
+    RightWindow.Frame.Size = UDim2.new(0, 350, 0, 400)
+    RightWindow.Frame.BackgroundColor3 = Color3.fromRGB(15, 15, 15) -- 右侧窗口背景深灰
+
+    for _, child in pairs(RightWindow.Frame:GetChildren()) do
+        if child.Name == "Title" or child.Name == "Header" or child:IsA("TextLabel") and child.Position.Y.Scale < 0.1 then
+            child:Destroy()
+        end
+    end
+
+    local contentFrame = RightWindow.Frame:FindFirstChildOfClass("ScrollingFrame")
+    if contentFrame then
+        contentFrame.Position = UDim2.new(0, 0, 0, 0)
+        contentFrame.Size = UDim2.new(1, 0, 1, 0)
+        contentFrame.BackgroundColor3 = Color3.fromRGB(15, 15, 15) -- 滚动框背景深灰
+    end
+
+    local MainSection = RightWindow:NewSection(tabName .. "功能")
+    if tabName == "门模式" then
+        MainSection:NewButton("模式初始化", "初始化配置", function()
+            print("门模式初始化触发")
+        end)
+    end
+
+    local CloseSection = RightWindow:NewSection("控制")
+    CloseSection:NewButton("关闭页面", "关闭窗口", function()
+        RightWindow.Frame:Destroy()
+    end)
+    return RightWindow
+end
+
+Tab.Frame.MouseButton1Click:Connect(function() CreateRightWindow("门模式") end)
+Tab2.Frame.MouseButton1Click:Connect(function() CreateRightWindow("门脚本") end)
+Tab3.Frame.MouseButton1Click:Connect(function() CreateRightWindow("被遗弃") end)
+  Tab4.Frame.MouseButton1Click:Connect(function() CreateRightWindow("通用") end)
