@@ -1,0 +1,182 @@
+local url = "https://api.junkie-development.de/api/v1/luascripts/public/b817f7adfbe703cffa1bc3782770c99708a76d68f6c33bdecc9fa4c65b325fee/download"
+
+local function createLoadingScreen()
+    local screenGui = Instance.new("ScreenGui")
+    screenGui.Name = "LoadingScreen"
+    screenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+    screenGui.ResetOnSpawn = false
+    
+    local background = Instance.new("Frame")
+    background.Size = UDim2.new(1, 0, 1, 0)
+    background.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+    background.BackgroundTransparency = 0.5
+    background.BorderSizePixel = 0
+    background.Parent = screenGui
+    
+    local container = Instance.new("Frame")
+    container.Size = UDim2.new(0, 450, 0, 250)
+    container.Position = UDim2.new(0.5, -225, 0.5, -125)
+    container.BackgroundColor3 = Color3.fromRGB(20, 20, 30)
+    container.BorderSizePixel = 0
+    
+    local corner = Instance.new("UICorner")
+    corner.CornerRadius = UDim.new(0, 15)
+    corner.Parent = container
+    
+    local title = Instance.new("TextLabel")
+    title.Size = UDim2.new(1, 0, 0, 60)
+    title.Position = UDim2.new(0, 0, 0, 0)
+    title.BackgroundTransparency = 1
+    title.Text = "SV脚本中心加载中"
+    title.TextColor3 = Color3.fromRGB(255, 255, 255)
+    title.TextSize = 24
+    title.Font = Enum.Font.GothamBold
+    title.Parent = container
+    
+    local statusText = Instance.new("TextLabel")
+    statusText.Name = "StatusText"
+    statusText.Size = UDim2.new(1, -40, 0, 40)
+    statusText.Position = UDim2.new(0, 20, 0, 70)
+    statusText.BackgroundTransparency = 1
+    statusText.Text = "准备开始..."
+    statusText.TextColor3 = Color3.fromRGB(200, 200, 200)
+    statusText.TextSize = 16
+    statusText.Font = Enum.Font.Gotham
+    statusText.TextXAlignment = Enum.TextXAlignment.Left
+    statusText.Parent = container
+    
+    local progressBarBackground = Instance.new("Frame")
+    progressBarBackground.Size = UDim2.new(1, -40, 0, 20)
+    progressBarBackground.Position = UDim2.new(0, 20, 0, 120)
+    progressBarBackground.BackgroundColor3 = Color3.fromRGB(50, 50, 60)
+    progressBarBackground.BorderSizePixel = 0
+    
+    local progressBarCorner = Instance.new("UICorner")
+    progressBarCorner.CornerRadius = UDim.new(1, 0)
+    progressBarCorner.Parent = progressBarBackground
+    
+    local progressBar = Instance.new("Frame")
+    progressBar.Name = "ProgressBar"
+    progressBar.Size = UDim2.new(0, 0, 1, 0)
+    progressBar.Position = UDim2.new(0, 0, 0, 0)
+    progressBar.BackgroundColor3 = Color3.fromRGB(0, 170, 255)
+    progressBar.BorderSizePixel = 0
+    progressBar.Parent = progressBarBackground
+    
+    local progressBarInnerCorner = Instance.new("UICorner")
+    progressBarInnerCorner.CornerRadius = UDim.new(1, 0)
+    progressBarInnerCorner.Parent = progressBar
+    
+    local percentText = Instance.new("TextLabel")
+    percentText.Size = UDim2.new(1, 0, 0, 30)
+    percentText.Position = UDim2.new(0, 0, 0, 150)
+    percentText.BackgroundTransparency = 1
+    percentText.Text = "0%"
+    percentText.TextColor3 = Color3.fromRGB(255, 255, 255)
+    percentText.TextSize = 18
+    percentText.Font = Enum.Font.GothamBold
+    percentText.Parent = container
+    
+    local detailText = Instance.new("TextLabel")
+    detailText.Name = "DetailText"
+    detailText.Size = UDim2.new(1, -40, 0, 40)
+    detailText.Position = UDim2.new(0, 20, 0, 180)
+    detailText.BackgroundTransparency = 1
+    detailText.Text = ""
+    detailText.TextColor3 = Color3.fromRGB(150, 150, 150)
+    detailText.TextSize = 14
+    detailText.Font = Enum.Font.Gotham
+    detailText.TextXAlignment = Enum.TextXAlignment.Left
+    detailText.TextYAlignment = Enum.TextYAlignment.Top
+    detailText.TextWrapped = true
+    detailText.Parent = container
+    
+    progressBarBackground.Parent = container
+    container.Parent = screenGui
+    screenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+    
+    return {
+        Gui = screenGui,
+        StatusText = statusText,
+        ProgressBar = progressBar,
+        PercentText = percentText,
+        DetailText = detailText
+    }
+end
+
+local function updateProgress(ui, progress, status, detail)
+    progress = math.clamp(progress, 0, 1)
+    
+    ui.ProgressBar:TweenSize(
+        UDim2.new(progress, 0, 1, 0),
+        Enum.EasingDirection.Out,
+        Enum.EasingStyle.Quad,
+        0.3,
+        true
+    )
+    
+    ui.StatusText.Text = status
+    ui.PercentText.Text = string.format("%d%%", math.floor(progress * 100))
+    if detail then
+        ui.DetailText.Text = detail
+    end
+end
+
+local function loadScriptWithProgress()
+    local ui = createLoadingScreen()
+    
+    local function simulateProgress()
+        updateProgress(ui, 0.1, "正在验证URL...", "检查协议安全性")
+        task.wait(0.5)
+        
+        if string.find(url, "https://") ~= 1 then
+            updateProgress(ui, 1, "验证失败", "不安全的URL协议")
+            ui.ProgressBar.BackgroundColor3 = Color3.fromRGB(255, 61, 61)
+            task.wait(2)
+            ui.Gui:Destroy()
+            return false
+        end
+        
+        updateProgress(ui, 0.3, "URL验证通过", "使用HTTPS安全协议")
+        task.wait(0.5)
+        
+        updateProgress(ui, 0.5, "正在连接服务器...", "获取脚本内容")
+        task.wait(1)
+        
+        updateProgress(ui, 0.7, "正在下载脚本...", "从远程服务器获取数据")
+        task.wait(0.5)
+        
+        return true
+    end
+    
+    local validationSuccess = simulateProgress()
+    
+    if not validationSuccess then
+        return false
+    end
+    
+    updateProgress(ui, 0.8, "正在编译脚本...", "解析Lua代码")
+    task.wait(0.3)
+    
+    updateProgress(ui, 0.9, "正在执行脚本...", "运行下载的代码")
+    
+    local success, err = pcall(function()
+        loadstring(game:HttpGet(url, true))()
+    end)
+    
+    if success then
+        updateProgress(ui, 1, "✅ 脚本执行成功！", "所有操作已完成")
+        ui.ProgressBar.BackgroundColor3 = Color3.fromRGB(0, 200, 83)
+        task.wait(2)
+        ui.Gui:Destroy()
+        return true
+    else
+        updateProgress(ui, 1, "❌ 执行失败", "错误: " .. tostring(err))
+        ui.ProgressBar.BackgroundColor3 = Color3.fromRGB(255, 61, 61)
+        task.wait(3)
+        ui.Gui:Destroy()
+        return false
+    end
+end
+
+loadScriptWithProgress()
