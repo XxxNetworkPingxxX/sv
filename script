@@ -1,3 +1,5 @@
+--你以为这是脚本源码吗，这其实是脚本加载进度条的源码，源码已经完全保护url="后面的才是源码的链接，就算是你打开真正的源码链接也会被网站保护看不成
+
 local url = "https://api.junkie-development.de/api/v1/luascripts/public/b817f7adfbe703cffa1bc3782770c99708a76d68f6c33bdecc9fa4c65b325fee/download"
 
 local function createLoadingScreen()
