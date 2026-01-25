@@ -1,1 +1,1 @@
-loadstring(game:HttpGet("https://api.junkie-development.de/api/v1/luascripts/public/b817f7adfbe703cffa1bc3782770c99708a76d68f6c33bdecc9fa4c65b325fee/download"))()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/XxxNetworkPingxxX/sv/main/SV脚本中心源码"))()
